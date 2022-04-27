@@ -39,7 +39,7 @@ private:
 		if (aux != nullptr) {
 			_invertListO1Recur(aux->next, aux);
 			aux->next = prev;
-		}else{
+		}else{ 
 			cabezanueva=prev;
 		}
 	}
@@ -235,7 +235,7 @@ public:
 			temp = current->next;
 			current->next = prev;
 			prev = current;
-			current = temp;
+			current = temp; 
 		}
 		return current;
 	}

@@ -193,6 +193,7 @@ private:
 		}
 		_print(n->next);
 	}
+	void MoveInDLL(Node<T>* n, DLCL)
 	void print() {
 		ToDLL();
 		DLCL<T>::Iterator it = IteBegin();

@@ -158,6 +158,41 @@ public:
 	Iterator IteEnd() {
 		return Iterator(nullptr, size);
 	}
+	void ToDLL() {
+		end->next = begin->back = nullptr;
+	}
+	void ToDLCL() {
+		end->next = begin;
+		begin->back = end;
+	}
+	void AllToDLL(DLCL<T>*& dll) {
+		ToDLL();
+		DLCL<T>::Iterator it = IteBegin();
+		MoveInDLL(it.getNodo(), dll);
+		ToDLCL();
+	}
+	void saveInFile(ofstream& arch) {
+		DLCL<T>::Iterator it = IteBegin();
+		for (ll i = 0; i < size; i++){
+			arch << *(it) << " ";
+			++it;
+		}
+		arch << "\n5n + 5";
+	}
+private:
+	void _print(Node<T>* n) {
+		if (n==nullptr){
+			return;
+		}
+		cout << n->element << " ";
+		if (n->child->size>0){
+			DLCL<T>::Iterator it = n->child->IteBegin();
+			n->child->ToDLL();
+			_print(it.getNodo());
+			n->child->ToDLCL();
+		}
+		_print(n->next);
+	}
 	void print() {
 		ToDLL();
 		DLCL<T>::Iterator it = IteBegin();

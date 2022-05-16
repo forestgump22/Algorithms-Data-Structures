@@ -24,7 +24,7 @@ public:
 		child = new DLCL<T>();
 	}
 	~Node() {
-		delete child;
+		child->eraseAll();
 	}
 	void insertChild(T value) {
 		child->push_back(value);
@@ -44,7 +44,10 @@ public:
 		size = 0;
 	}
 	~DLCL() {
-		while (size>0){
+		eraseAll();
+	}
+	void eraseAll() {
+		while (size > 0) {
 			pop_back();
 		}
 	}
@@ -126,6 +129,7 @@ public:
 			end= end->back;
 			aux->back = nullptr;
 			end->next = nullptr;
+			aux->child->eraseAll();
 			delete aux;
 			end->next = begin;
 			begin->back = end;
@@ -155,5 +159,110 @@ public:
 			return (this->pos != a.pos);
 		}
 	};
-
+	Iterator Itebegin() {
+		return Iterator(begin, 0);
+	}
+	Iterator Iteend() {
+		return Iterator(nullptr, size);
+	}
+	void print() {
+		ToDLL();
+		DLCL<T>::Iterator it = Itebegin();
+		_print(it.getNodo());
+		ToDLCL();
+	}
+	void ToDLL() {
+		end->next = begin->back = nullptr;
+	}
+	void ToDLCL() {
+		end->next = begin;
+		begin->back = end;
+	}
+	void AllToDLL(DLCL<T>*& dll) {
+		ToDLL();
+		DLCL<T>::Iterator it = Itebegin();
+		MoveInDLL(it.getNodo(), dll);
+		ToDLCL();
+	}
+	void saveInFile(ofstream& arch) {
+		DLCL<T>::Iterator it = Itebegin();
+		for (ll i = 0; i < size; i++){
+			arch << *(it) << " ";
+			++it;
+		}
+		arch << "\n5n+ 5";
+	}
+private:
+	void _print(Node<T>* n) {
+		if (n==nullptr){
+			return;
+		}
+		cout << n->element << " ";
+		if (n->child->size>0){
+			DLCL<T>::Iterator it = n->child->Itebegin();
+			n->child->ToDLL();
+			_print(it.getNodo());
+			n->child->ToDLCL();
+		}
+		_print(n->next);
+	}
+	void MoveInDLL(Node<T>* n, DLCL<T>*& dll) {
+		if (n==nullptr){
+			return;
+		}
+		dll->push_back(n->element);
+		if (n->child->size>0){
+			DLCL<T>::Iterator it = n->child->begin();
+			n->child->ToDLL();
+			MoveInDLL(it.getNodo(), dll);
+			n->child->ToDLCL();
+		}
+		MoveInDLL(n->next, dll);
+	}
 };
+
+class Sample {
+	DLCL<string>* lista;
+	DLCL<string>* current;
+	DLCL<string>* res;
+public:
+	Sample() {
+		lista = new DLCL<string>();
+		res = new DLCL<string>();
+	}
+	~Sample() {
+		lista->eraseAll();
+		current->eraseAll();
+		res->eraseAll();
+	}
+	void readInput() {
+		ifstream arch("input.txt");
+		string line;
+		int nullCount = -1;
+		current = lista;
+		while (getline(arch,line,',')){
+			if (line=="nullptr"){
+				++nullCount;
+				continue;
+			}
+			if (nullCount==-1){
+				current->push_back(line);
+			}else{
+				current = current->insertChild(line, nullCount);
+				nullCount = -1;
+			}
+		}
+		lista->AllToDLL(res);
+		cout << "\nEl resultado es: ";
+		res->print();
+		ofstream out("output.txt");
+		res->saveInFile(out);
+	}
+};
+
+int main() {
+	Sample* s = new Sample;
+	s->readInput();
+	delete s;
+	return 0;
+}

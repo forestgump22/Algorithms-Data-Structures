@@ -1,6 +1,6 @@
 #pragma once
 #include<functional>
-#define ll long long
+typedef long long ll;
 template<typename T>
 class SimpleList;
 template<typename T>
@@ -44,7 +44,6 @@ private:
 		}
 	}
 public:
-	SimpleList() = default();
 	SimpleList(std::function<bool(T)> filter, std::function<bool(T,T)> comp)
 		:filter(filter),comp(comp){
 		this->begin = this->end = this->aux = nullptr;

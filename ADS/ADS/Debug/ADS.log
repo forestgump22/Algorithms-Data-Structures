@@ -1,0 +1,7 @@
+﻿  PC02.cpp
+  Main.obj : se encontró un módulo MSIL; vinculación incremental deshabilitada para MSIL; ejecutando vínculo completo
+PC01.obj : error LNK2005: ya se definió _main en Main.obj
+PC01.obj : error LNK2005: ya se definió "int __cdecl main(void)" (?main@@$$HYAHXZ) en Main.obj
+PC02.obj : error LNK2005: ya se definió _main en Main.obj
+PC02.obj : error LNK2005: ya se definió "int __cdecl main(void)" (?main@@$$HYAHXZ) en Main.obj
+D:\UPC 2\Archivo Upc DropBox\UPC\CICLO DIC-MARZO\CODE FULL REPOSITORY ALL\C++\Algorithms and Data Structures\ADS\Debug\ADS.exe : fatal error LNK1169: se encontraron uno o más símbolos definidos simultáneamente
